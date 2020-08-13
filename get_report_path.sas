@@ -15,7 +15,7 @@ LIBNAME rptFile json;
 
 data ds_rpts (keep=rptID id name createdBy creationTimeStamp modifiedTimeStamp  
 			  rename=(modifiedTimeStamp=LastModified creationTimeStamp=CreatedAt));
-	length rptID $ 40 rptPath $ 100;
+	length rptID $ 60 rptPath $ 100;
 	set rptFile.items;
 	rptID = '/reports/reports/'||id;
 run;
