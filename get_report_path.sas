@@ -1,3 +1,6 @@
+/* The article for the codes is at:                                                                                    */
+/* https://blogs.sas.com/content/sgf/2020/08/20/discover-visual-analytics-report-paths-with-rest-apis/   */
+
 %let BASE_URI=%sysfunc(getoption(SERVICESBASEURL));
 %let fullpath=/SAS Content/;
 
