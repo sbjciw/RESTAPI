@@ -3,7 +3,7 @@ FILENAME tranFile TEMP ENCODING='UTF-8';
 FILENAME hdrout TEMP ENCODING='UTF-8';
 
 /* transform the datasource of a report   */
-/* use the transFile to hold the report content  */
+/* use the transFile to hold the response body  */
 PROC HTTP METHOD="POST" oauth_bearer=sas_services OUT=tranFile headerout=hdrout
 	URL = "&BASE_URI/reportTransforms/dataMappedReports/?useSavedReport=true&saveResult=true"
 	IN = '
@@ -46,13 +46,10 @@ PROC HTTP METHOD="POST" oauth_bearer=sas_services OUT=tranFile headerout=hdrout
 							    "name": "Transformed Report 1",
 							    "description": "TEST report transform"
 							}
-
 			}
-		'
-	;
+		';
     HEADERS "Accept" = "application/vnd.sas.report.transform+json"
-			"Content-Type" = "application/vnd.sas.report.transform+json"
-	;
+			"Content-Type" = "application/vnd.sas.report.transform+json" ;
 RUN;
 LIBNAME tranFile json;
 
@@ -62,19 +59,22 @@ proc sql;
 	from tranFile.alldata
 	where p1="errorMessages";
 quit;
+
+/* check the messages from the transform   */
 proc sql;
 	select p1, p2, value
 	from tranFile.alldata
 	where p1="messages";
 quit;
 
-/* print the output file */
+/* print the response  */
 data  _null_;
 	infile tranFile;
 	input;
 	put _infile_;
 run;
 
+/* print the response header */
 data  _null_;
 	infile hdrout;
 	input;
